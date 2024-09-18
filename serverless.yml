@@ -1,0 +1,28 @@
+service: starwars-serverless-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_USER: ${env:DB_USER}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_DATABASE: ${env:DB_DATABASE}
+
+functions:
+  createCharacter:
+    handler: src/handler.createCharacter
+    events:
+      - http:
+          path: crear
+          method: post
+  getCharacters:
+    handler: src/handler.getCharacters
+    events:
+      - http:
+          path: obtener
+          method: get
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript

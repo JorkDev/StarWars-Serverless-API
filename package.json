@@ -1,0 +1,39 @@
+{
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^1.7.7",
+    "mysql2": "^3.11.3",
+    "serverless": "^4.3.3",
+    "serverless-mysql": "^1.5.5"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "^22.5.5",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-plugin-typescript": "^2.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "name": "starwars-serverless-api",
+  "description": "Este proyecto consiste en crear una API utilizando **Node.js** y desplegarla en **AWS Lambda** mediante el uso del **Serverless Framework**. La API realiza una integración con la API pública de StarWars (**SWAPI**) y traduce los nombres de los atributos del inglés al español. Además, se integra con una base de datos MySQL para almacenar los datos obtenidos y manipulados.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JorkDev/StarWars-Serverless-API.git"
+  },
+  "keywords": [
+    "serverless",
+    "nodejs",
+    "typescript"
+  ],
+  "author": "JorkDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JorkDev/StarWars-Serverless-API/issues"
+  },
+  "homepage": "https://github.com/JorkDev/StarWars-Serverless-API#readme"
+}
