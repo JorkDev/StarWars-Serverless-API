@@ -20,7 +20,7 @@ interface TranslatedCharacter {
   color_cabello: string;
   color_piel: string;
   color_ojos: string;
-  año_nacimiento: string;
+  ano_nacimiento: string;
   genero: string;
 }
 
@@ -31,7 +31,7 @@ const translateSWAPICharacter = (character: SWAPICharacter): TranslatedCharacter
   color_cabello: character.hair_color,
   color_piel: character.skin_color,
   color_ojos: character.eye_color,
-  año_nacimiento: character.birth_year,
+  ano_nacimiento: character.birth_year,
   genero: character.gender
 });
 
@@ -43,7 +43,7 @@ export const createCharacter = async (event: APIGatewayProxyEvent): Promise<APIG
     const translatedCharacter = translateSWAPICharacter(response.data);
 
     const query = `
-      INSERT INTO personajes (nombre, altura, peso, color_cabello, color_piel, color_ojos, año_nacimiento, genero)
+      INSERT INTO personajes (nombre, altura, peso, color_cabello, color_piel, color_ojos, ano_nacimiento, genero)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
     await connection.query(query, Object.values(translatedCharacter));
@@ -56,9 +56,10 @@ export const createCharacter = async (event: APIGatewayProxyEvent): Promise<APIG
       })
     };
   } catch (error) {
+    const typedError = error as Error;
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'No se pudo crear el personaje', details: error.message })
+      body: JSON.stringify({ error: 'No se pudo crear el personaje', details: typedError.message })
     };
   }
 };
@@ -73,9 +74,10 @@ export const getCharacters = async (): Promise<APIGatewayProxyResult> => {
       body: JSON.stringify(rows)
     };
   } catch (error) {
+    const typedError = error as Error;
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'No se pudieron obtener los personajes', details: error.message })
+      body: JSON.stringify({ error: 'No se pudieron obtener los personajes', details: typedError.message })
     };
   }
 };
