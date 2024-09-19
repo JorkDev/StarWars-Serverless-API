@@ -31,7 +31,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint 'src/**/*.{ts,tsx}'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "swagger": "ts-node swagger-server.ts"
   },
   "repository": {
     "type": "git",
