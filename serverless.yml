@@ -14,15 +14,14 @@ functions:
     handler: src/handler.createCharacter
     events:
       - http:
-          path: crear
+          path: create
           method: post
   getCharacters:
     handler: src/handler.getCharacters
     events:
       - http:
-          path: obtener
+          path: get
           method: get
 
 plugins:
   - serverless-offline
-  - serverless-plugin-typescript
