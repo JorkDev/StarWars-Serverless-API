@@ -1,5 +1,4 @@
 declare module 'swagger-jsdoc' {
-    const swaggerJSDoc: any;
-    export default swaggerJSDoc;
-  }
-  
+  const swaggerJSDoc: (options: unknown) => unknown;
+  export default swaggerJSDoc;
+}
