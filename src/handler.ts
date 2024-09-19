@@ -1,6 +1,6 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import axios from 'axios';
-import connection from './db';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import axios from "axios";
+import connection from "./db";
 
 interface SWAPICharacter {
   name: string;
@@ -24,7 +24,9 @@ interface TranslatedCharacter {
   genero: string;
 }
 
-const translateSWAPICharacter = (character: SWAPICharacter): TranslatedCharacter => ({
+const translateSWAPICharacter = (
+  character: SWAPICharacter
+): TranslatedCharacter => ({
   nombre: character.name,
   altura: character.height,
   peso: character.mass,
@@ -32,10 +34,60 @@ const translateSWAPICharacter = (character: SWAPICharacter): TranslatedCharacter
   color_piel: character.skin_color,
   color_ojos: character.eye_color,
   ano_nacimiento: character.birth_year,
-  genero: character.gender
+  genero: character.gender,
 });
 
-export const createCharacter = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+/**
+ * @swagger
+ * /create:
+ *   post:
+ *     summary: Crea un nuevo personaje en la base de datos
+ *     description: Obtiene un personaje desde SWAPI y lo almacena en la base de datos MySQL
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               swapiUrl:
+ *                 type: string
+ *                 description: La URL del personaje en SWAPI
+ *     responses:
+ *       200:
+ *         description: Personaje creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 personaje:
+ *                   type: object
+ *                   properties:
+ *                     nombre:
+ *                       type: string
+ *                     altura:
+ *                       type: string
+ *                     peso:
+ *                       type: string
+ *                     color_cabello:
+ *                       type: string
+ *                     color_piel:
+ *                       type: string
+ *                     color_ojos:
+ *                       type: string
+ *                     ano_nacimiento:
+ *                       type: string
+ *                     genero:
+ *                       type: string
+ *       500:
+ *         description: Error al crear el personaje
+ */
+export const createCharacter = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
   try {
     const { swapiUrl } = JSON.parse(event.body!);
 
@@ -51,33 +103,74 @@ export const createCharacter = async (event: APIGatewayProxyEvent): Promise<APIG
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Personaje creado exitosamente desde SWAPI',
-        personaje: translatedCharacter
-      })
+        message: "Personaje creado exitosamente desde SWAPI",
+        personaje: translatedCharacter,
+      }),
     };
   } catch (error) {
     const typedError = error as Error;
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'No se pudo crear el personaje', details: typedError.message })
+      body: JSON.stringify({
+        error: "No se pudo crear el personaje",
+        details: typedError.message,
+      }),
     };
   }
 };
 
+/**
+ * @swagger
+ * /get:
+ *   get:
+ *     summary: Obtiene los personajes almacenados en la base de datos
+ *     description: Devuelve todos los personajes almacenados en la base de datos MySQL
+ *     responses:
+ *       200:
+ *         description: Lista de personajes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   nombre:
+ *                     type: string
+ *                   altura:
+ *                     type: string
+ *                   peso:
+ *                     type: string
+ *                   color_cabello:
+ *                     type: string
+ *                   color_piel:
+ *                     type: string
+ *                   color_ojos:
+ *                     type: string
+ *                   ano_nacimiento:
+ *                     type: string
+ *                   genero:
+ *                     type: string
+ *       500:
+ *         description: Error al obtener los personajes
+ */
 export const getCharacters = async (): Promise<APIGatewayProxyResult> => {
   try {
-    const query = 'SELECT * FROM personajes';
+    const query = "SELECT * FROM personajes";
     const [rows] = await connection.query(query);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(rows)
+      body: JSON.stringify(rows),
     };
   } catch (error) {
     const typedError = error as Error;
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'No se pudieron obtener los personajes', details: typedError.message })
+      body: JSON.stringify({
+        error: "No se pudieron obtener los personajes",
+        details: typedError.message,
+      }),
     };
   }
 };
